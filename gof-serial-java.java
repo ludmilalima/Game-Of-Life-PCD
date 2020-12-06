@@ -2,38 +2,22 @@ import java.util.*;
 
 public class gameOfLife {
     private static final int dim = 2048;
-    private static final int lifeCycles = 2001;
+    private static final int lifeCycles = 500;
     private static final int SRAND_VALUE = 1985;
 
-    private int[][] grid; 
-    private int[][] newgrid;
+    private static int[][] grid; 
+    private static int[][] newgrid;
 
     public gameOfLife(){
         this.grid = new int[dim][dim];
         this.newgrid = new int[dim][dim];
     }
 
-    public void setGrid(int data, int i, int j){
-        this.grid[i][j] = data;
-    }
-
-    public int[][] getGrid(){
-        return this.grid;
-    }
-
-    public void setNewGrid(int data, int i, int j){
-        this.newgrid[i][j] = data;
-    }
-
-    public int[][] getNewGrid(){
-        return this.newgrid;
-    }
-
     public int getNeighbors(int i, int j){
         int neighborNum = 0, z, w, aux;
 
-        aux = this.getGrid()[i][j];
-        this.setGrid(0, i, j);
+        aux = grid[i][j];
+        grid[i][j] = 0;
     
         for(int a = i-1; a <= i+1; a++){
             for(int b = j-1; b <= j+1; b++){
@@ -52,11 +36,11 @@ public class gameOfLife {
                     w = b;
                 }
     
-                neighborNum += this.getGrid()[z][w];
+                neighborNum += grid[z][w];
             }
         }
     
-        this.getGrid()[i][j] = aux;
+        grid[i][j] = aux;
     
         return neighborNum;
     }
@@ -64,64 +48,73 @@ public class gameOfLife {
     public void setNextGen(){
         for(int i = 0; i < dim; i++){
             for(int j = 0; j < dim; j++){
-                if(this.getGrid()[i][j] == 1){
+                if(grid[i][j] == 1){
                     if(this.getNeighbors(i, j) >= 2 && this.getNeighbors(i, j) <= 3){
-                        this.setNewGrid(1, i, j);
+                        newgrid[i][j] = 1;
                     }else{
-                        this.setNewGrid(0, i, j);
+                        newgrid[i][j] = 0;
                     }
                 }else{
                     if(getNeighbors(i, j) == 3){
-                        this.setNewGrid(1, i, j);
+                        newgrid[i][j] = 1;
                     }
                 }
             }
         }
     
-        for(int i = 0; i < dim; i++){
-            for(int j = 0; j < dim; j++){
-                this.setGrid(this.getNewGrid()[i][j], i, j);
-            }
-        }
     }    
     
     public int retCellNum(){
         int cellNum = 0;
         for(int i = 0; i < dim; i++){
             for(int j = 0; j < dim; j++){
-                cellNum += this.getGrid()[i][j];
+                cellNum += grid[i][j];
             }
         }
     
         return cellNum;
     }
 
-    public void runLife(){
+    public double runLife(){
+        double startTime, endTime, totalTime = 0;
+        
         for(int i = 0; i < lifeCycles; i++){
             System.out.println("Geracao " + i + ": " + this.retCellNum());
     
+            startTime = System.currentTimeMillis();
+
             this.setNextGen();
+
+            endTime = System.currentTimeMillis();
+
+            totalTime += (endTime - startTime);
+
+            for(int z = 0; z < dim; z++){
+                for(int w = 0; w < dim; w++){
+                    grid[z][w] = newgrid[z][w];
+                }
+            }
         }
+
+        return totalTime;
     }
 
     public static void main(String[] args) {
         Random gerador = new Random(SRAND_VALUE);
 
+        double totalTime;
+
         gameOfLife gof = new gameOfLife();
  
         for(int i = 0; i < dim; i++) { //laço sobre as células do tabuleiro sem contar com um eventual halo
             for(int j = 0; j < dim; j++) {
-                gof.setGrid(gerador.nextInt(2147483647) % 2, i, j);
+                grid[i][j] = gerador.nextInt(2147483647) % 2;
             }
         }
 
-        gof.runLife();
+        totalTime = gof.runLife();
 
-        // for(i = 0; i < dim; i++) { //laço sobre as células do tabuleiro sem contar com um eventual halo
-        //     for(j = 0; j < dim; j++) {
-        //         System.out.print("->" + gof.getGrid()[i][j] + "<-");
-        //     }
-        // }
+        System.out.println("Tempo: " + (totalTime/1000));
 
     }
 }
