@@ -8,7 +8,7 @@
 
 #define SRAND_VALUE 1985
 #define dim 2048
-#define lifeCycles 2001
+#define lifeCycles 100
 #define num_threads 2
 
 int **grid;
@@ -55,22 +55,20 @@ int getNeighbors(int i, int j){
 void setNextGen(){
 
     inicio = omp_get_wtime();
-    #pragma omp parallel for shared(dim), private(i,j)
+    #pragma omp parallel
     {
+        #pragma omp for
         for(int i = 0; i < dim; i++){
-            #pragma omp parallel for shared(dim), private(i,j)
-            {
-                for(int j = 0; j < dim; j++){
-                    if(grid[i][j] == 1){
-                        if(getNeighbors(i, j) >= 2 && getNeighbors(i, j) <= 3){
-                            newgrid[i][j] = 1;
-                        }else{
-                            newgrid[i][j] = 0;
-                        }
+            for(int j = 0; j < dim; j++){
+                if(grid[i][j] == 1){
+                    if(getNeighbors(i, j) >= 2 && getNeighbors(i, j) <= 3){
+                        newgrid[i][j] = 1;
                     }else{
-                        if(getNeighbors(i, j) == 3){
-                            newgrid[i][j] = 1;
-                        }
+                        newgrid[i][j] = 0;
+                    }
+                }else{
+                    if(getNeighbors(i, j) == 3){
+                        newgrid[i][j] = 1;
                     }
                 }
             }

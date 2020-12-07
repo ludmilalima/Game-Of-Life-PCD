@@ -5,7 +5,7 @@
 
 #define SRAND_VALUE 1985
 #define dim 2048
-#define lifeCycles 2001
+#define lifeCycles 100
 
 int **grid;
 int **newgrid;

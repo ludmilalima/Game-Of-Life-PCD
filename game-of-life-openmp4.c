@@ -1,4 +1,4 @@
-// gcc gamr-of-life-openmp.c -lgomp -o exec
+// gcc game-of-life-openmp.c -lgomp -o exec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -8,7 +8,7 @@
 
 #define SRAND_VALUE 1985
 #define dim 2048
-#define lifeCycles 2001
+#define lifeCycles 100
 #define num_threads 4
 
 int **grid;
@@ -53,13 +53,12 @@ int getNeighbors(int i, int j){
 }
 
 void setNextGen(){
-    
     inicio = omp_get_wtime();
-    #pragma omp parallel for shared(dim), private(i,j)
+    
+    #pragma omp parallel
     {
+        #pragma omp for
         for(int i = 0; i < dim; i++){
-            #pragma omp parallel for shared(dim), private(i,j)
-            {
                 for(int j = 0; j < dim; j++){
                     if(grid[i][j] == 1){
                         if(getNeighbors(i, j) >= 2 && getNeighbors(i, j) <= 3){
@@ -73,7 +72,6 @@ void setNextGen(){
                         }
                     }
                 }
-            }
         }
     }
 
