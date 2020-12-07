@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <sys/time.h>
 
 #define SRAND_VALUE 1985
 #define dim 2048
@@ -58,11 +59,6 @@ void setNextGen(){
         }
     }
 
-    for(int i = 0; i < dim; i++){
-        for(int j = 0; j < dim; j++){
-            grid[i][j] = newgrid[i][j];
-        }
-    }
 }
 
 int retCellNum(){
@@ -76,16 +72,37 @@ int retCellNum(){
     return cellNum;
 }
 
-void runLife(){
+double runLife(){
+    struct timeval startTV, endTV;
+
+    double auxTime = 0, totalTime;
+
     for(int i = 0; i < lifeCycles; i++){
         printf("Geracao %d: %d\n", i, retCellNum(grid));
 
+        gettimeofday(&startTV, NULL);
         setNextGen();
+        gettimeofday(&endTV, NULL);
+
+        totalTime = (endTV.tv_sec - startTV.tv_sec)*1000;
+        totalTime += (endTV.tv_usec - startTV.tv_usec)/1000;
+
+        auxTime += totalTime;
+
+        for(int i = 0; i < dim; i++){
+            for(int j = 0; j < dim; j++){
+                grid[i][j] = newgrid[i][j];
+            }
+        }
     }
+
+    return auxTime;
 }
 
 int main(){
     srand(SRAND_VALUE);
+
+    double TV;
 
     grid = malloc(dim*sizeof(int *));
     for(int i = 0; i < dim; i++){
@@ -103,7 +120,9 @@ int main(){
         }
     }
 
-    runLife();
+    TV = runLife();
+
+    printf("Tempo: %.2f\n", TV/1000);
 
     return 0;
 }
