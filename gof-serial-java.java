@@ -2,7 +2,7 @@ import java.util.*;
 
 public class gameOfLife {
     private static final int dim = 2048;
-    private static final int lifeCycles = 500;
+    private static final int lifeCycles = 2001;
     private static final int SRAND_VALUE = 1985;
 
     private static int[][] grid; 
@@ -114,6 +114,7 @@ public class gameOfLife {
 
         totalTime = gof.runLife();
 
+        System.out.println("Serial - Java");
         System.out.println("Tempo: " + (totalTime/1000));
 
     }

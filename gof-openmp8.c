@@ -1,4 +1,3 @@
-// gcc game-of-life-openmp.c -lgomp -o exec
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -8,11 +7,12 @@
 
 #define SRAND_VALUE 1985
 #define dim 2048
-#define lifeCycles 100
+#define lifeCycles 2001
 #define num_threads 8
 
 int **grid;
 int **newgrid;
+int numCell;
 double inicio, fim, acumulado;
 
 int getNeighbors(int i, int j){
@@ -53,55 +53,47 @@ int getNeighbors(int i, int j){
 }
 
 void setNextGen(){
-    
+
     inicio = omp_get_wtime();
+    
     #pragma omp parallel
     {
-        #pragma omp for
-        for(int i = 0; i < dim; i++){
-            for(int j = 0; j < dim; j++){
-                if(grid[i][j] == 1){
-                    if(getNeighbors(i, j) >= 2 && getNeighbors(i, j) <= 3){
-                        newgrid[i][j] = 1;
-                    }else{
-                        newgrid[i][j] = 0;
-                    }
-                }else{
-                    if(getNeighbors(i, j) == 3){
-                        newgrid[i][j] = 1;
+            #pragma omp for reduction(+:numCell)
+                for(int i = 0; i < dim; i++){
+                    for(int j = 0; j < dim; j++){
+                        if(grid[i][j] == 1){
+                            if((getNeighbors(i, j) == 2) || (getNeighbors(i, j) == 3)){
+                                newgrid[i][j] = 1;
+                                numCell++;
+                            }else{
+                                newgrid[i][j] = 0;
+                            }
+                        }else{
+                            if(getNeighbors(i, j) == 3){
+                                newgrid[i][j] = 1;
+                                numCell++;
+                            }
+                        }
                     }
                 }
-            }
-        }
+        #pragma omp barrier
+            #pragma omp parallel for
+                for(int i = 0; i < dim; i++){
+                    for(int j = 0; j < dim; j++){
+                        grid[i][j] = newgrid[i][j];
+                    }
+                }
     }
-    
+
     fim = omp_get_wtime();
     acumulado = acumulado + (fim-inicio);
-
-    for(int i = 0; i < dim; i++){
-        for(int j = 0; j < dim; j++){
-            grid[i][j] = newgrid[i][j];
-        }
-    }
-}
-
-int retCellNum(){
-    int cellNum = 0;
-    
-    for(int i = 0; i < dim; i++){
-        
-        for(int j = 0; j < dim; j++){
-            cellNum += grid[i][j];
-        }
-        
-    }
-    return cellNum;
 }
 
 void runLife(){
 
     for(int i = 0; i < lifeCycles; i++){
-        printf("Geracao %d: %d\n", i, retCellNum(grid));
+        printf("Geracao %d: %d\n", i, numCell);
+        numCell = 0;
         setNextGen();
     }
 }
@@ -111,6 +103,7 @@ void runLife(){
 int main(){
     srand(SRAND_VALUE);
     acumulado = 0;
+    numCell = 0;
 
     omp_set_num_threads(num_threads);
 
@@ -128,10 +121,15 @@ int main(){
     for(int i = 0; i < dim; i++){
         for(int j = 0; j < dim; j++){
             grid[i][j] = rand() % 2;
+            numCell += grid[i][j];
         }
     }
     
     runLife();
-    printf("\nTempo acumulado 8: %f\n", acumulado);
+    
+    printf("\nOpenMP");
+    printf("\nNumero de Threads: %d",num_threads);
+    printf("\nTempo: %.2f\n", acumulado);
+
     return 0;
 }

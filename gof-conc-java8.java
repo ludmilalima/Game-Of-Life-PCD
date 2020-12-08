@@ -3,7 +3,7 @@ import java.lang.Thread;
 
 public class gameOfLife extends Thread{
     private static final int dim = 2048;
-    private static final int lifeCycles = 500;
+    private static final int lifeCycles = 2001;
     private static final int SRAND_VALUE = 1985;
 
     private volatile static int[][] grid; 
@@ -114,26 +114,26 @@ public class gameOfLife extends Thread{
             // gameOfLife gof[] = {
             //     new gameOfLife(0, dim)
             // };
-            gameOfLife gof[] = {
-                new gameOfLife(0, dim/2),
-                new gameOfLife(dim/2, dim)
-            };
+            // gameOfLife gof[] = {
+            //     new gameOfLife(0, dim/2),
+            //     new gameOfLife(dim/2, dim)
+            // };
             // gameOfLife gof[] = {
             //     new gameOfLife(0, dim/4),
             //     new gameOfLife(dim/4, 2*dim/4),
             //     new gameOfLife(2*dim/4, 3*dim/4),
             //     new gameOfLife(3*dim/4, dim)
             // };
-            // gameOfLife gof[] = {
-            //     new gameOfLife(0, dim/8),
-            //     new gameOfLife(dim/8, 2*dim/8),
-            //     new gameOfLife(2*dim/8, 3*dim/8),
-            //     new gameOfLife(3*dim/8, 4*dim/8),
-            //     new gameOfLife(4*dim/8, 5*dim/8),
-            //     new gameOfLife(5*dim/8, 6*dim/8),
-            //     new gameOfLife(6*dim/8, 7*dim/8),
-            //     new gameOfLife(7*dim/8, dim)
-            // };
+            gameOfLife gof[] = {
+                new gameOfLife(0, dim/8),
+                new gameOfLife(dim/8, 2*dim/8),
+                new gameOfLife(2*dim/8, 3*dim/8),
+                new gameOfLife(3*dim/8, 4*dim/8),
+                new gameOfLife(4*dim/8, 5*dim/8),
+                new gameOfLife(5*dim/8, 6*dim/8),
+                new gameOfLife(6*dim/8, 7*dim/8),
+                new gameOfLife(7*dim/8, dim)
+            };
 
             startTime = System.currentTimeMillis();
 
@@ -162,7 +162,7 @@ public class gameOfLife extends Thread{
             }
         }
 
-        System.out.println("Numero de Threads : 4");
+        System.out.println("Numero de Threads : 8");
         System.out.println("Tempo: " + (totalTime/1000));
 
     }
