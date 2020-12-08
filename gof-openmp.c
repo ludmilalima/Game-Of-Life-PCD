@@ -8,7 +8,7 @@
 #define SRAND_VALUE 1985
 #define dim 2048
 #define lifeCycles 2001
-#define num_threads 8
+#define num_threads 2
 
 int **grid;
 int **newgrid;
@@ -90,15 +90,12 @@ void setNextGen(){
 }
 
 void runLife(){
-
     for(int i = 0; i < lifeCycles; i++){
         printf("Geracao %d: %d\n", i, numCell);
         numCell = 0;
         setNextGen();
     }
 }
-
-
 
 int main(){
     srand(SRAND_VALUE);

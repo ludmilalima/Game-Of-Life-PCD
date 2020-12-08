@@ -10,7 +10,6 @@
 
 int **grid;
 int **newgrid;
-int *semaphore;
 int *currCell;
 
 typedef struct pth_args{
@@ -124,11 +123,6 @@ int main(){
 
     printf("Geracao 0: %d\n", currCell[0]);
     currCell[0] = 0;
-
-    semaphore = malloc(threadNum*sizeof(int));
-    for(int i = 0; i < threadNum; i++){
-        semaphore[i] = -1;
-    }
 
     for(int i = 0; i < threadNum; i++){
         t[i].start = (dim/threadNum)*i;
