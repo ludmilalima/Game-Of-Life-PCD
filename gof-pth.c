@@ -4,9 +4,9 @@
 #include <sys/time.h>
 
 #define dim 2048
-#define lifeCycles 500
+#define lifeCycles 2000
 #define SRAND_VALUE 1985
-#define threadNum 4
+#define threadNum 8
 
 int **grid;
 int **newgrid;

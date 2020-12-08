@@ -8,7 +8,7 @@
 #define SRAND_VALUE 1985
 #define dim 2048
 #define lifeCycles 2001
-#define num_threads 2
+#define num_threads 8
 
 int **grid;
 int **newgrid;
