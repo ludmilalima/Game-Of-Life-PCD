@@ -5,7 +5,7 @@
 
 #define SRAND_VALUE 1985
 #define dim 2048
-#define lifeCycles 100
+#define lifeCycles 500
 
 int **grid;
 int **newgrid;
@@ -122,6 +122,7 @@ int main(){
 
     TV = runLife();
 
+    printf("Serial - C");
     printf("Tempo: %.2f\n", TV/1000);
 
     return 0;

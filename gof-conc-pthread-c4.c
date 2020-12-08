@@ -101,48 +101,48 @@ double runLife(){
         // pthread_join(tp2, NULL);
 
         //4 threads
-        // pthread_t tp1, tp2, tp3, tp4;
-        // threadArg_t t1, t2, t3, t4;
-        // t1.start = 0; t1.end = dim/4;
-        // t2.start = dim/4; t2.end = 2*dim/4;
-        // t3.start = 2*dim/4; t3.end = 3*dim/4;
-        // t4.start = 3*dim/4; t4.end = dim;
-        // pthread_create(&tp1, NULL, setNextGen, &t1);
-        // pthread_create(&tp2, NULL, setNextGen, &t2);
-        // pthread_create(&tp3, NULL, setNextGen, &t3);
-        // pthread_create(&tp4, NULL, setNextGen, &t4);
-        // pthread_join(tp1, NULL);
-        // pthread_join(tp2, NULL);
-        // pthread_join(tp3, NULL);
-        // pthread_join(tp4, NULL);
-
-        //8 threads
-        pthread_t tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8;
-        threadArg_t t1, t2, t3, t4, t5, t6, t7, t8;
-        t1.start = 0; t1.end = dim/8;
-        t2.start = dim/8; t2.end = 2*dim/8;
-        t3.start = 2*dim/8; t3.end = 3*dim/8;
-        t4.start = 3*dim/8; t8.end = 4*dim/8;
-        t5.start = 4*dim/8; t5.end = 5*dim/8;
-        t6.start = 5*dim/8; t6.end = 6*dim/8;
-        t7.start = 6*dim/8; t7.end = 7*dim/8;
-        t8.start = 7*dim/8; t8.end = dim;
+        pthread_t tp1, tp2, tp3, tp4;
+        threadArg_t t1, t2, t3, t4;
+        t1.start = 0; t1.end = dim/4;
+        t2.start = dim/4; t2.end = 2*dim/4;
+        t3.start = 2*dim/4; t3.end = 3*dim/4;
+        t4.start = 3*dim/4; t4.end = dim;
         pthread_create(&tp1, NULL, setNextGen, &t1);
         pthread_create(&tp2, NULL, setNextGen, &t2);
         pthread_create(&tp3, NULL, setNextGen, &t3);
         pthread_create(&tp4, NULL, setNextGen, &t4);
-        pthread_create(&tp5, NULL, setNextGen, &t5);
-        pthread_create(&tp6, NULL, setNextGen, &t6);
-        pthread_create(&tp7, NULL, setNextGen, &t7);
-        pthread_create(&tp8, NULL, setNextGen, &t8);
         pthread_join(tp1, NULL);
         pthread_join(tp2, NULL);
         pthread_join(tp3, NULL);
         pthread_join(tp4, NULL);
-        pthread_join(tp5, NULL);
-        pthread_join(tp6, NULL);
-        pthread_join(tp7, NULL);
-        pthread_join(tp8, NULL);
+
+        //8 threads
+        // pthread_t tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8;
+        // threadArg_t t1, t2, t3, t4, t5, t6, t7, t8;
+        // t1.start = 0; t1.end = dim/8;
+        // t2.start = dim/8; t2.end = 2*dim/8;
+        // t3.start = 2*dim/8; t3.end = 3*dim/8;
+        // t4.start = 3*dim/8; t8.end = 4*dim/8;
+        // t5.start = 4*dim/8; t5.end = 5*dim/8;
+        // t6.start = 5*dim/8; t6.end = 6*dim/8;
+        // t7.start = 6*dim/8; t7.end = 7*dim/8;
+        // t8.start = 7*dim/8; t8.end = dim;
+        // pthread_create(&tp1, NULL, setNextGen, &t1);
+        // pthread_create(&tp2, NULL, setNextGen, &t2);
+        // pthread_create(&tp3, NULL, setNextGen, &t3);
+        // pthread_create(&tp4, NULL, setNextGen, &t4);
+        // pthread_create(&tp5, NULL, setNextGen, &t5);
+        // pthread_create(&tp6, NULL, setNextGen, &t6);
+        // pthread_create(&tp7, NULL, setNextGen, &t7);
+        // pthread_create(&tp8, NULL, setNextGen, &t8);
+        // pthread_join(tp1, NULL);
+        // pthread_join(tp2, NULL);
+        // pthread_join(tp3, NULL);
+        // pthread_join(tp4, NULL);
+        // pthread_join(tp5, NULL);
+        // pthread_join(tp6, NULL);
+        // pthread_join(tp7, NULL);
+        // pthread_join(tp8, NULL);
 
         gettimeofday(&endTV, NULL);
 
@@ -184,7 +184,9 @@ int main(){
 
     totalTime = runLife();
 
-    printf("Tempo: %.2f\n", totalTime/1000);
+    printf("\nPthread");
+    printf("\nNumero de Threads: 4");
+    printf("\nTempo: %.2f\n", totalTime/1000);
 
     return 0;
 }
